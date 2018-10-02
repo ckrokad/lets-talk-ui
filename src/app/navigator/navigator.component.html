@@ -1,0 +1,50 @@
+<header>
+	<nav class="nav-extended blue darken-4">
+		<div class="nav-wrapper hoverable">
+			<a href="#" class="brand-logo center">Let's Talk</a>
+			<ul id="nav-mobile" class="right">
+				<li><a class="dropdown-trigger hoverable" data-target="dropdown1"><i class="material-icons">more_vert</i></a></li>
+				<!-- Dropdown Structure -->
+				<ul id='dropdown1' class='dropdown-content'>
+					<li><a href="#!" class="blue-text"><i class="material-icons blue-text">person</i>Profile</a></li>
+					<li class="divider" tabindex="-1"></li>
+					<li><a (click)="logout()" routerLink="/login" class="blue-text"><i class="material-icons blue-text">exit_to_app</i>Logout</a></li>
+				</ul>
+			</ul>
+		</div>
+
+		<div class="nav-content">
+			<ul id="tabs-swipe-demo" class="tabs tabs-fixed-width">
+				<li class="tab col s3"><a class="active blue-text waves-effect" href="#swipe-1">Chats</a></li>
+				<li class="tab col s3"><a class="blue-text waves-effect" href="#swipe-2">Calls</a></li>
+				<li class="tab col s3"><a class="blue-text waves-effect" href="#swipe-3">Active</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="fixed-action-btn">
+		<a class="btn-floating btn-large blue darken-4">
+			<i class="large material-icons">search</i>
+		</a>
+		<ul>
+			<li>
+				<div>
+					<div class="input-field">
+						<input id="search" type="search" required>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</header>
+
+<main>
+	<div id="swipe-1" class="col s12">
+		<app-chat-list></app-chat-list>
+	</div>
+	<div id="swipe-2" class="col s12">
+		<app-call-list></app-call-list>
+	</div>
+	<div id="swipe-3" class="col s12">
+		<app-active-list></app-active-list>
+	</div>
+</main>
