@@ -11,6 +11,9 @@ export const environment = {
 		projectId: 'letstalk-eda9c',
 		storageBucket: 'letstalk-eda9c.appspot.com',
 		messagingSenderId: '492879843047'
+	},
+	apiEndpoints: {
+		profile: 'http://localhost:8080/api/profile/'
 	}
 };
 

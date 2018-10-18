@@ -12,13 +12,18 @@ import { ProfileComponent } from './profile/profile.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { NavigatorComponent } from './navigator/navigator.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import {FirebaseUIModule, firebase, firebaseui} from 'firebaseui-angular';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule, AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 import { SignupComponent } from './signup/signup.component';
 import { OneTimeComponent } from './one-time/one-time.component';
+
+import { TokenInterceptor } from './services/token.interceptor';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
 	signInFlow: 'popup',
@@ -49,9 +54,18 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
 		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 		AngularFireModule.initializeApp(environment.firebase),
 		AngularFireAuthModule,
-		FirebaseUIModule.forRoot(firebaseUiAuthConfig)
+		FirebaseUIModule.forRoot(firebaseUiAuthConfig),
+		FormsModule,
+		AngularFireStorageModule,
+		HttpClientModule
 	],
-	providers: [],
+	providers: [
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: TokenInterceptor,
+			multi: true
+		}
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }

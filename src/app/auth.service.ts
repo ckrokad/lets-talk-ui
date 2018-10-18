@@ -19,11 +19,15 @@ export class AuthService {
 	private firebaseAuthChangeListener(response) {
 		// if needed, do a redirect in here
 		if (response) {
-			console.log(response);
-			localStorage.setItem('user', response);
+			// console.log(response);
+			localStorage.setItem('user', JSON.stringify(response));
+			response.getIdToken(true).then(function(token){
+				localStorage.setItem('idToken', token);
+			});
 			console.log('Logged in :)');
 		} else {
 			localStorage.removeItem('user');
+			localStorage.removeItem('idToken');
 			console.log('Logged out :(');
 		}
 	}
@@ -31,12 +35,14 @@ export class AuthService {
 	logout() {
 		this.afAuth.auth.signOut();
 		localStorage.removeItem('user');
+		localStorage.removeItem('idToken');
 		this.router.navigate(['/login']);
 	}
 
 	loginSuccessCallback(data: FirebaseUISignInSuccessWithAuthResult) {
-		console.log('successCallback', data);
+		// console.log('successCallback', data);
 		if(data.authResult.additionalUserInfo.isNewUser){
+			console.log('One time details');
 			this.router.navigate(['/onetimedetails']);
 		}
 		else{

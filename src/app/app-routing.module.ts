@@ -3,8 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { SignupComponent } from './signup/signup.component';
 import { NavigatorComponent } from './navigator/navigator.component';
 import { AuthGuard } from './auth.guard';
+import { OneTimeComponent } from './one-time/one-time.component';
 
 const routes: Routes = [
+	{
+		path: 'onetimedetails',
+		component: OneTimeComponent,
+		canActivate: [AuthGuard]
+	},
 	{
 		path: 'login',
 		component: SignupComponent,
