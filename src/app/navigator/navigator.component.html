@@ -1,12 +1,24 @@
 <header>
+	<nav *ngIf="search">
+		<div class="nav-wrapper blue darken-4">
+			<form>
+				<div class="input-field">
+					<input id="search" type="search" (search)="doSearch()" required autocomplete="off">
+					<label class="label-icon" for="search"><a><i (click)="doSearch()" class="material-icons">search</i></a></label>
+					<i class="material-icons">close</i>
+				</div>
+			</form>
+		</div>
+	</nav>
+
 	<nav class="nav-extended blue darken-4">
-		<div class="nav-wrapper hoverable">
+		<div  class="nav-wrapper hoverable">
 			<a href="#" class="brand-logo center">Let's Talk</a>
 			<ul id="nav-mobile" class="right">
 				<li><a class="dropdown-trigger hoverable" data-target="dropdown1"><i class="material-icons">more_vert</i></a></li>
 				<!-- Dropdown Structure -->
 				<ul id='dropdown1' class='dropdown-content'>
-					<li><a href="#!" class="blue-text"><i class="material-icons blue-text">person</i>Profile</a></li>
+					<li><a (click)="showMyProfile()" class="blue-text"><i class="material-icons blue-text">person</i>Profile</a></li>
 					<li class="divider" tabindex="-1"></li>
 					<li><a (click)="logout()" routerLink="/login" class="blue-text"><i class="material-icons blue-text">exit_to_app</i>Logout</a></li>
 				</ul>
@@ -22,18 +34,9 @@
 		</div>
 	</nav>
 	<div class="fixed-action-btn">
-		<a class="btn-floating btn-large blue darken-4">
+		<a (click)="search = !search" class="btn-floating btn-large blue darken-4">
 			<i class="large material-icons">search</i>
 		</a>
-		<ul>
-			<li>
-				<div>
-					<div class="input-field">
-						<input id="search" type="search" required>
-					</div>
-				</div>
-			</li>
-		</ul>
 	</div>
 </header>
 

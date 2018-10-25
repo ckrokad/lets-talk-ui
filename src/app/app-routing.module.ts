@@ -4,7 +4,8 @@ import { SignupComponent } from './signup/signup.component';
 import { NavigatorComponent } from './navigator/navigator.component';
 import { AuthGuard } from './auth.guard';
 import { OneTimeComponent } from './one-time/one-time.component';
-
+import { ProfileComponent } from './profile/profile.component';
+import { ChatComponent } from './chat/chat.component';
 const routes: Routes = [
 	{
 		path: 'onetimedetails',
@@ -14,6 +15,16 @@ const routes: Routes = [
 	{
 		path: 'login',
 		component: SignupComponent,
+		canActivate: [AuthGuard]
+	},
+	{
+		path: 'profile',
+		component: ProfileComponent,
+		canActivate: [AuthGuard]
+	},
+	{
+		path: 'chat/:id',
+		component: ChatComponent,
 		canActivate: [AuthGuard]
 	},
 	{

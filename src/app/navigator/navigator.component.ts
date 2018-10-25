@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthService } from '../auth.service';
+import { SocketService } from '../services/socket.service';
+import { ProfileService } from '../services/profile.service';
+import { Router } from '@angular/router';
 
 declare var M(): any;
 
@@ -11,19 +14,41 @@ declare var M(): any;
 })
 export class NavigatorComponent implements OnInit {
 
-	constructor(private afAuth: AngularFireAuth, private auth: AuthService) { }
+	public search;
+
+	constructor(private afAuth: AngularFireAuth,
+		private auth: AuthService,
+		private ss: SocketService,
+		private profServ: ProfileService,
+		private router: Router) { }
 
 	ngOnInit() {
-		var elems = document.querySelectorAll('.dropdown-trigger');
-		M.Dropdown.init(elems);
-
-		elems = document.querySelectorAll('.fixed-action-btn');
-		M.FloatingActionButton.init(elems, { direction: 'left' });
+		M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
 
 		M.Tabs.init(document.querySelectorAll('.tabs'), { swipeable: true });
+
+		this.ss.initSocket();
 	}
 
 	logout() {
 		this.auth.logout();
+	}
+
+	doSearch(){
+		const that = this;
+		var val = document.querySelector('#search').value;
+		if(/^\d{10}$/.test(val)){
+			this.profServ.getProfileByPhoneNumber(val).subscribe(function(result){
+				if(result.phoneNumber === '+91' + val){
+					that.profServ.changeSearchedUser(result);
+					that.router.navigate(['profile']);
+				}
+			});
+		}
+	}
+
+	showMyProfile(){
+		this.profServ.changeSearchedUser(JSON.parse(localStorage.getItem('user')));
+		this.router.navigate(['profile']);
 	}
 }

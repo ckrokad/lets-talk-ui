@@ -1,6 +1,7 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+const apiServer = 'http://localhost:8080/api/';
 
 export const environment = {
 	production: false,
@@ -13,8 +14,13 @@ export const environment = {
 		messagingSenderId: '492879843047'
 	},
 	apiEndpoints: {
-		profile: 'http://localhost:8080/api/profile/'
-	}
+		profile: apiServer + 'profile/',
+		chat: apiServer + 'chat/',
+		message: apiServer + 'message/'
+	},
+	socketUrl: 'http://localhost:8080',
+	profileImageThumbUrl: 'https://firebasestorage.googleapis.com/v0/b/letstalk-eda9c.appspot.com/o/profile%2Fthumb_%2B91',
+	profileImageUrl: 'https://firebasestorage.googleapis.com/v0/b/letstalk-eda9c.appspot.com/o/profile%2F%2B91',
 };
 
 /*

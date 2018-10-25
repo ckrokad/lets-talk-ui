@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from '../services/chat.service';
+import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 declare var M(): any;
 
@@ -8,13 +11,43 @@ declare var M(): any;
 	styleUrls: ['./chat-list.component.css']
 })
 export class ChatListComponent implements OnInit {
-
-	constructor() { }
+	chats;
+	constructor(private chatServ: ChatService, private router: Router) { }
 
 	ngOnInit() {
+		const that = this;
+		this.clearChatsFromStorage();
+		this.chatServ.getAllChats().subscribe(function (result) {
+			for(let i=0 ; i<result.length ; i++){
+				localStorage.setItem('chat_' + result[i]._id, JSON.stringify(result[i]));
+			}
+			that.chats = that.getChatsFromStorage();
+		});
 	}
 
-	ohYeah() {
-		console.log("Oh yeah");
+	getProfileImage(phoneNumber){
+		return environment.profileImageThumbUrl + phoneNumber.slice(3) + '?alt=media';
+	}
+
+	getChatsFromStorage(){
+		let result = [];
+		for(let key in localStorage){
+			if(key.slice(0,4) === 'chat'){
+				result.push(JSON.parse(localStorage.getItem(key)));
+			}
+		}
+		return result;
+	}
+
+	clearChatsFromStorage(){
+		for (let key in localStorage) {
+			if (key.slice(0, 4) === 'chat') {
+				localStorage.removeItem(key);
+			}
+		}
+	}
+
+	openChat(id){
+		this.router.navigate(['chat', id._id]);
 	}
 }

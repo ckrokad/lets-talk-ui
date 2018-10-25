@@ -1,13 +1,15 @@
 <div class="scroll">
 	<div>
 		<ul class="collection">
-			<li (click)="ohYeah()" class="collection-item avatar waves-effect">
-				<img src="images/yuna.jpg" alt="" class="circle">
-				<i class="material-icons circle large">person</i>
-				<span class="title"><b>Anmol Saxena</b></span>
-				<p class="grey-text">Hello</p>
-				<span class="secondary-content blue-text">12:45</span>
+			<div >
+			<li *ngFor="let chat of chats" (click)="openChat(chat)" class="collection-item avatar waves-effect">
+				<img [src]="getProfileImage(chat.user1.phoneNumber)" alt="" class="circle">
+				<!-- <i class="material-icons circle large">person</i> -->
+				<span class="title"><b>{{chat.user1.displayName}}</b></span>
+				<p class="grey-text">{{chat.user1.status}}</p>
+				<!-- <span class="secondary-content blue-text">12:45</span> -->
 			</li>
+			</div>
 		</ul>
 	</div>
 </div>

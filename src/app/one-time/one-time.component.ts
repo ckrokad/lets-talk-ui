@@ -45,22 +45,25 @@ export class OneTimeComponent implements OnInit {
 		const storageRef = this.storage.ref(path);
 		const image = document.querySelector('#profile_image').files[0];
 		storageRef.put(image);
-		const profileUrl = await storageRef.getDownloadURL().toPromise();
+		// const profileUrl = await storageRef.getDownloadURL().toPromise();
 		// console.log(profileUrl);
 
 		user.updateProfile({
 			displayName: data.display_name,
-			photoURL: profileUrl
+			photoURL: ''
 		}).then(function(){
 			console.log('updated');
 			// console.log(user);
 		});
-
-		this.profile.changeStatus(data.status, user.uid).subscribe(function(result){
+		const that = this;
+		this.profile.changeStatus(data.status, user.uid, user.phoneNumber, data.display_name).subscribe(function(result){
 			console.log(result);
+			that.profile.getProfileByUid(user.uid).subscribe(function(res){
+				localStorage.setItem('user', JSON.stringify(res));
+			});
 		});
 
-		this.router.navigate(['/'];)
+		this.router.navigate(['/']);
 
 		// this.profile.getProfile(user.uid).subscribe(function(result){
 		// 	console.log(result);

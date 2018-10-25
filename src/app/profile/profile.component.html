@@ -1,20 +1,24 @@
 <header>
 	<nav class="nav-extended blue darken-4">
 		<div class="nav-wrapper hoverable">
-			<a href="#" class="brand-logo center">Let's Talk</a>
-			<ul id="nav-mobile" class="right">
-				<li><a class="dropdown-trigger hoverable" data-target="dropdown1"><i class="material-icons">more_vert</i></a></li>
-				<!-- Dropdown Structure -->
-				<ul id='dropdown1' class='dropdown-content'>
-					<li><a href="#!" class="blue-text"><i class="material-icons blue-text">person</i>Profile</a></li>
-					<li class="divider" tabindex="-1"></li>
-					<li><a href="#!" class="blue-text"><i class="material-icons blue-text">exit_to_app</i>Logout</a></li>
-				</ul>
-			</ul>
+			<a href="#" class="brand-logo center">{{user.displayName}}</a>
 		</div>
-
 	</nav>
 </header>
 
 <main>
+	<img class="materialboxed" width="100%" [src]="getProfileImage(user.phoneNumber)">
+	<div class="row">
+		<div class="col s12">
+			<h4>Phone Number: {{user.phoneNumber}}</h4>
+		</div>
+		<div class="col s12">
+			<h4>Status: {{user.profile.status}}</h4>
+		</div>
+		<div class="col s12">
+			<div class="center-align">
+				<button id="chat-button" (click)="startChat()" class="btn blue darken-4 center waves-effect">Message</button>
+			</div>
+		</div>
+	</div>
 </main>

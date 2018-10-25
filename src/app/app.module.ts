@@ -28,7 +28,10 @@ import { TokenInterceptor } from './services/token.interceptor';
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
 	signInFlow: 'popup',
 	signInOptions: [
-		firebase.auth.PhoneAuthProvider.PROVIDER_ID
+		{
+			provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+			defaultCountry: 'IN'
+		}
 	],
 	tosUrl: '',
 	// privacyPolicyUrl: '<your-privacyPolicyUrl-link>',
