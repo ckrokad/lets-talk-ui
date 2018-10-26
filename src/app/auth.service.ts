@@ -5,6 +5,8 @@ import { FirebaseUISignInSuccessWithAuthResult } from 'firebaseui-angular';
 import { FirebaseUISignInFailure } from 'firebaseui-angular';
 import { Router } from '@angular/router';
 import { ProfileService } from './services/profile.service';
+import { SocketService } from './services/socket.service';
+import { EventEmitter } from 'events';
 
 
 @Injectable({
@@ -12,8 +14,14 @@ import { ProfileService } from './services/profile.service';
 })
 export class AuthService {
 	public redirectUrl = '/';
+	public authCompletedEmitter$: EventEmitter;
 
-	constructor(public afAuth: AngularFireAuth, private router: Router, private profile: ProfileService) {
+	constructor(public afAuth: AngularFireAuth,
+		private router: Router,
+		private profile: ProfileService,
+		private socketService: SocketService) {
+
+		this.authCompletedEmitter$ = new EventEmitter();
 		const that = this;
 		this.afAuth.authState.subscribe(function (response) {
 			// if needed, do a redirect in here
@@ -24,11 +32,14 @@ export class AuthService {
 					localStorage.setItem('user', JSON.stringify(response));
 					that.profile.getProfileByUid(response.uid).subscribe(function (res) {
 						localStorage.setItem('user', JSON.stringify(res));
+						that.socketService.initSocket();
+						that.authComplete();
 					});
 					// that.router.navigate(['/']);
 				});
 				console.log('Logged in :)');
 			} else {
+				that.socketService.disconnect();
 				localStorage.removeItem('user');
 				localStorage.removeItem('idToken');
 				console.log('Logged out :(');
@@ -37,6 +48,7 @@ export class AuthService {
 	}
 
 	logout() {
+		this.socketService.disconnect();
 		this.afAuth.auth.signOut();
 		localStorage.removeItem('user');
 		localStorage.removeItem('idToken');
@@ -56,5 +68,9 @@ export class AuthService {
 
 	loginErrorCallback(data: FirebaseUISignInFailure) {
 		console.warn('errorCallback', data);
+	}
+
+	authComplete(){
+		this.authCompletedEmitter$.emit('authenticated');
 	}
 }

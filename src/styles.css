@@ -19,7 +19,7 @@
 }
 body .tabs-content {
 	display: flex;
-  	height: calc(100vh - 112px);
+  	/* height: calc(100vh - 112px); */
 	flex-direction: column;
 }
 

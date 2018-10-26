@@ -18,7 +18,6 @@ export class NavigatorComponent implements OnInit {
 
 	constructor(private afAuth: AngularFireAuth,
 		private auth: AuthService,
-		private ss: SocketService,
 		private profServ: ProfileService,
 		private router: Router) { }
 
@@ -26,8 +25,6 @@ export class NavigatorComponent implements OnInit {
 		M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
 
 		M.Tabs.init(document.querySelectorAll('.tabs'), { swipeable: true });
-
-		this.ss.initSocket();
 	}
 
 	logout() {

@@ -1,7 +1,18 @@
 <header>
-	<nav class="nav-extended blue darken-4">
-		<div class="nav-wrapper hoverable">
+	<nav class="blue darken-4">
+		<!-- <div class="nav-wrapper hoverable">
 			<a href="#" class="brand-logo center">{{user.displayName}}</a>
+		</div>
+		<ul id="nav-mobile" class="left">
+			<li><a (click)="goBack()"><i class="material-icons">arrow_back</i></a></li>
+		</ul> -->
+		<div class="nav-wrapper blue darken-4">
+			<a href="#" class="brand-logo center">
+				{{user.displayName}}
+			</a>
+			<ul id="nav-mobile" class="left">
+				<li><a (click)="goBack()"><i class="material-icons">arrow_back</i></a></li>
+			</ul>
 		</div>
 	</nav>
 </header>

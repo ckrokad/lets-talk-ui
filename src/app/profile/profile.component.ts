@@ -3,6 +3,7 @@ import { ChatService } from '../services/chat.service';
 import { environment } from '../../environments/environment';
 import { ProfileService } from '../services/profile.service';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 declare var M(): any;
 
@@ -15,7 +16,10 @@ export class ProfileComponent implements OnInit {
 
 	private user;
 
-	constructor(private chatServ: ChatService, private profServ: ProfileService, private router: Router) { }
+	constructor(private chatServ: ChatService,
+		private profServ: ProfileService,
+		private router: Router,
+		private location: Location) { }
 
 	ngOnInit() {
 
@@ -34,6 +38,12 @@ export class ProfileComponent implements OnInit {
 	startChat(){
 		const that = this;
 		this.chatServ.createOrGetChat(this.user.profile._id).subscribe(function(result){
+			if (JSON.parse(localStorage.getItem('user')).uid == result.user1.uid) {
+				result.other = result.user2;
+			}
+			else {
+				result.other = result.user1;
+			}
 			localStorage.setItem('chat_' + result._id, JSON.stringify(result));
 			that.router.navigate(['chat', result._id]);
 		});
@@ -41,5 +51,9 @@ export class ProfileComponent implements OnInit {
 
 	getProfileImage(phoneNumber) {
 		return environment.profileImageThumbUrl + phoneNumber.slice(3) + '?alt=media';
+	}
+
+	goBack(){
+		this.location.back();
 	}
 }

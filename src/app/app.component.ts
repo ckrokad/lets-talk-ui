@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { AngularFireAuth } from '@angular/fire/auth';
-import { FirebaseUISignInSuccessWithAuthResult } from 'firebaseui-angular';
-import { FirebaseUISignInFailure } from 'firebaseui-angular';
+import { SocketService } from './services/socket.service';
+import { AuthService } from './auth.service';
 
 declare var M(): any;
 
@@ -11,14 +10,25 @@ declare var M(): any;
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 	title = 'lets-talk-ui';
 
-	constructor(private afAuth: AngularFireAuth){
+	constructor(public auth: AuthService,
+		private socketService: SocketService){
 	}
 
 	ngOnInit(): void {
-		//this.afAuth.authState.subscribe(this.firebaseAuthChangeListener);
+		const that = this;
+		this.auth.authCompletedEmitter$.addListener('authenticated', function(){
+			that.initToConnection();
+		});
+	}
+
+	private initToConnection(){
+		// if(this.socketService.isConnected()){
+			this.socketService.onMessage().subscribe(function(message){
+				console.log(message);
+			});
+		// }
 	}
 }
-
