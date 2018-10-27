@@ -27,16 +27,16 @@ export class AuthService {
 			// if needed, do a redirect in here
 			if (response) {
 				// console.log(response);
-				response.getIdToken(true).then(function (token) {
-					localStorage.setItem('idToken', token);
-					localStorage.setItem('user', JSON.stringify(response));
-					that.profile.getProfileByUid(response.uid).subscribe(function (res) {
-						localStorage.setItem('user', JSON.stringify(res));
-						that.socketService.initSocket();
-						that.authComplete();
-					});
-					// that.router.navigate(['/']);
-				});
+				// response.getIdToken(true).then(function (token) {
+				// 	localStorage.setItem('idToken', token);
+					// localStorage.setItem('user', JSON.stringify(response));
+				// 	that.profile.getProfileByUid(response.uid).subscribe(function (res) {
+				// 		localStorage.setItem('user', JSON.stringify(res));
+				// 		that.socketService.initSocket();
+				// 		that.authComplete();
+				// 	});
+				// 	// that.router.navigate(['/']);
+				// });
 				console.log('Logged in :)');
 			} else {
 				that.socketService.disconnect();
@@ -52,17 +52,32 @@ export class AuthService {
 		this.afAuth.auth.signOut();
 		localStorage.removeItem('user');
 		localStorage.removeItem('idToken');
+		localStorage.removeItem('authenticated');
 		this.router.navigate(['/login']);
 	}
 
 	loginSuccessCallback(data: FirebaseUISignInSuccessWithAuthResult) {
 		// console.log('successCallback', data);
+		const that = this;
 		if (data.authResult.additionalUserInfo.isNewUser){
 			console.log('One time details');
-			this.router.navigate(['/onetimedetails']);
+			localStorage.setItem('user', JSON.stringify(data.authResult.user));
+			data.authResult.user.getIdToken(true).then(function(token){
+				localStorage.setItem('idToken', token);
+				that.router.navigate(['/onetimedetails']);
+			});
 		}
 		else {
-			this.router.navigate(['/']);
+			data.authResult.user.getIdToken(true).then(function (token) {
+				localStorage.setItem('idToken', token);
+				localStorage.setItem('user', JSON.stringify(data.authResult.user));
+				that.profile.getProfileByUid(data.authResult.user.uid).subscribe(function (res) {
+					localStorage.setItem('user', JSON.stringify(res));
+					that.authComplete();
+					that.router.navigate(['/']);
+				});
+			});
+			// this.router.navigate(['/']);
 		}
 	}
 
@@ -71,6 +86,7 @@ export class AuthService {
 	}
 
 	authComplete(){
+		localStorage.setItem('authenticated', 'true');
 		this.authCompletedEmitter$.emit('authenticated');
 	}
 }

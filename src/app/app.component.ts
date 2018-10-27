@@ -22,13 +22,17 @@ export class AppComponent implements OnInit {
 		this.auth.authCompletedEmitter$.addListener('authenticated', function(){
 			that.initToConnection();
 		});
+		if(localStorage.getItem('authenticated') === 'true'){
+			this.initToConnection();
+		}
 	}
 
 	private initToConnection(){
-		// if(this.socketService.isConnected()){
-			this.socketService.onMessage().subscribe(function(message){
-				console.log(message);
-			});
-		// }
+		if(!this.socketService.isConnected()){
+			this.socketService.initSocket();
+		}
+		this.socketService.onMessage().subscribe(function(message){
+			console.log(message);
+		});
 	}
 }

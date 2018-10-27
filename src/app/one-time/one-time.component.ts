@@ -4,6 +4,7 @@ import { ProfileService } from '../services/profile.service'
 import { Router } from '@angular/router';
 
 import * as firebase from 'firebase';
+import { AuthService } from '../auth.service';
 
 declare var M(): any;
 
@@ -16,7 +17,8 @@ export class OneTimeComponent implements OnInit {
 
 	constructor(private storage: AngularFireStorage,
 		private profile: ProfileService,
-		private router: Router) { }
+		private router: Router,
+		private auth: AuthService) { }
 
 	ngOnInit() {
 		var elems = document.querySelectorAll('.materialboxed');
@@ -60,10 +62,10 @@ export class OneTimeComponent implements OnInit {
 			console.log(result);
 			that.profile.getProfileByUid(user.uid).subscribe(function(res){
 				localStorage.setItem('user', JSON.stringify(res));
+				that.auth.authComplete();
+				that.router.navigate(['/']);
 			});
 		});
-
-		this.router.navigate(['/']);
 
 		// this.profile.getProfile(user.uid).subscribe(function(result){
 		// 	console.log(result);

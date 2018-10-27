@@ -54,7 +54,7 @@ export class ChatListComponent implements OnInit {
 		}
 	}
 
-	openChat(id){
-		this.router.navigate(['chat', id._id]);
+	openChat(user){
+		this.router.navigate(['chat', user._id]);
 	}
 }
