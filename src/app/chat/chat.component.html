@@ -22,7 +22,7 @@
 						<span class="time-right">{{message.sent_time | date:medium}}</span>
 					</div>
 				</div>
-				<div *ngIf="message.from != user">
+				<div *ngIf="message.to.uid == user.uid">
 					<div class="container">
 						<img [src]="getProfileImage(chat.other.phoneNumber)" style="height:60px" alt="" class="circle">
 						<p>{{message.body}}</p>
