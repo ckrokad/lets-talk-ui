@@ -42,6 +42,7 @@ export class AuthService {
 				that.socketService.disconnect();
 				localStorage.removeItem('user');
 				localStorage.removeItem('idToken');
+				localStorage.removeItem('authenticated');
 				console.log('Logged out :(');
 			}
 		});

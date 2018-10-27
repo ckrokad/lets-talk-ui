@@ -14,13 +14,24 @@
 <main style="height: 100%; width: 100%;">
 	<div style="height: 78%">
 		<div class="container scroll" style="margin: 0; background-color: white; width: 100%; height: 100%;">
-			<div class="container">
-				<img [src]="getProfileImage(chat.other.phoneNumber)" style="height:60px" alt="" class="circle">
-				<p>Hello. How are you today?</p>
-				<span class="time-right">11:00</span>
+			<div *ngFor="let message of messages">
+				<div *ngIf="message.from.uid == user.uid">
+					<div class="container darker right-align">
+						<img [src]="getProfileImage(user.phoneNumber)" style="height:60px" alt="" class="circle right">
+						<p>{{message.body}}</p>
+						<span class="time-right">{{message.sent_time | date:medium}}</span>
+					</div>
+				</div>
+				<div *ngIf="message.from != user">
+					<div class="container">
+						<img [src]="getProfileImage(chat.other.phoneNumber)" style="height:60px" alt="" class="circle">
+						<p>{{message.body}}</p>
+						<span class="time-left">{{message.sent_time | date:time}}</span>
+					</div>
+				</div>
+
 			</div>
-			
-			<div class="container darker right-align">
+			<!-- <div class="container darker right-align">
 				<img [src]="getProfileImage(user.phoneNumber)" style="height:60px" alt="" class="circle right">
 				<p>Hey! I'm fine. Thanks for asking!</p>
 				<span class="time-left">11:01</span>
@@ -48,13 +59,13 @@
 				<img [src]="getProfileImage(user.phoneNumber)" style="height:60px" alt="" class="circle">
 				<p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
 				<span class="time-left">11:05</span>
-			</div>
+			</div> -->
 		</div>
 		<div class="input-box row">
-			<div class="input-field">
-				<input id="icon_prefix" type="text" style="width: 100%" class="validate">
-				<label for="icon_prefix">Type a message</label>
-				<i class="material-icons prefix">send</i>
+			<div class="input-field" id="mess-input">
+				<input #messagebox id="message-box" type="text" class="validate">
+				<label for="message-box">Type a message</label>
+				<i (click)="sendMessage(messagebox.value)" class="material-icons prefix">send</i>
 			</div>
 		</div>
 	</div>

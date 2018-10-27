@@ -18,7 +18,7 @@ export const environment = {
 		chat: apiServer + 'chat/',
 		message: apiServer + 'message/'
 	},
-	socketUrl: 'http://localhost:8080',
+	socketUrl: 'http://192.168.1.114:8080',
 	profileImageThumbUrl: 'https://firebasestorage.googleapis.com/v0/b/letstalk-eda9c.appspot.com/o/profile%2Fthumb_%2B91',
 	profileImageUrl: 'https://firebasestorage.googleapis.com/v0/b/letstalk-eda9c.appspot.com/o/profile%2F%2B91',
 };

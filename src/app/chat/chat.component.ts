@@ -28,13 +28,11 @@ export class ChatComponent implements OnInit {
 		this.user = JSON.parse(localStorage.getItem('user'));
 		this.route.params.subscribe(function(result){
 			that.chat = JSON.parse(localStorage.getItem('chat_' + result['id']));
-			that.messageServ.getMessages(result['id']).subscribe(function(messages){
-				console.log(messages);
-				that.messages = messages;
-			});
 		});
 
-		// this.socketService.initSocket();
+		that.socketService.onMessage().subscribe(function(message){
+			that.messages = JSON.parse(localStorage.getItem('messages_' + that.chat._id));
+		});
 	}
 
 	goBack(){
@@ -53,5 +51,32 @@ export class ChatComponent implements OnInit {
 
 	getProfileImage(phoneNumber) {
 		return environment.profileImageThumbUrl + phoneNumber.slice(3) + '?alt=media';
+	}
+
+	sendMessage(messageText){
+		if(messageText !== ''){
+			console.log(messageText);
+			console.log(new Date());
+			const c = {
+				user1: this.chat.user1,
+				user2: this.chat.user2,
+				_id: this.chat._id
+			};
+			const message = {
+				from: this.user.profile,
+				to: this.chat.other,
+				chat: c,
+				body: messageText,
+				sent_time: new Date(),
+				received_time: '',
+				read_time: '',
+				deleted: false,
+			};
+			this.socketService.sendMessage(message);
+			document.getElementById("message-box").value = '';
+			window.scrollBy(0, 20);
+			// this.messageServ.addMessageToStorage(message);
+			// console.log(message);
+		}
 	}
 }

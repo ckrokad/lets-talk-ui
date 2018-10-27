@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { SocketService } from './services/socket.service';
 import { AuthService } from './auth.service';
+import { MessageService } from './services/message.service';
 
 declare var M(): any;
 
@@ -14,7 +15,8 @@ export class AppComponent implements OnInit {
 	title = 'lets-talk-ui';
 
 	constructor(public auth: AuthService,
-		private socketService: SocketService){
+		private socketService: SocketService,
+		private messageService: MessageService){
 	}
 
 	ngOnInit(): void {
@@ -29,10 +31,13 @@ export class AppComponent implements OnInit {
 
 	private initToConnection(){
 		if(!this.socketService.isConnected()){
+			this.messageService.clearMessagesFromStorage();
 			this.socketService.initSocket();
 		}
+		const that = this;
 		this.socketService.onMessage().subscribe(function(message){
-			console.log(message);
+			// console.log(message);
+			that.messageService.addMessageToStorage(message);
 		});
 	}
 }
